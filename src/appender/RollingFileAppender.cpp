@@ -11,8 +11,8 @@ RollingFileAppender::RollingFileAppender(const char *fileName, uint16_t maxRowLe
   if (addDefaultFormatter) {
     setFormatter(Appender::getDefaultFormatter());
   }
-  // load SPIFFS by default
-  if (SPIFFS.begin()) {
+
+  if (LittleFS.begin()) {
     _log.verbose(F("File system mounted."));
   } else {
     _log.warning(F("Mounting file system failed."));
@@ -108,8 +108,8 @@ File RollingFileAppender::getFile() {
 
   if (!_file && getFileName()) {
     // open existing file and set file preferences
-    if (SPIFFS.exists(getFileName())) {
-      _file = SPIFFS.open(getFileName(), "r+");
+    if (LittleFS.exists(getFileName())) {
+      _file = LittleFS.open(getFileName(), "r+");
       if (_file) {
         _log.trace(F("Open log file [%s] successful."), getFileName());
         _file.seek(readOffset(), SeekSet);
@@ -119,7 +119,7 @@ File RollingFileAppender::getFile() {
       }
       // create a new file and set default file preferences
     } else {
-      _file = SPIFFS.open(getFileName(), "w+");
+      _file = LittleFS.open(getFileName(), "w+");
       if (_file) {
         _log.trace(F("Creating new log file [%s] was successful."), getFileName());
         writeOffset(OFFSET_LENGTH);

@@ -1,12 +1,7 @@
 #ifndef ROLLING_FILE_APPENDER_H
 #define ROLLING_FILE_APPENDER_H
 
-#if defined(ESP32)
-#include <SPIFFS.h>
-#else
-#include <FS.h>
-#endif
-
+#include <LittleFS.h>
 #include "Appender.h"
 #include "Logger.h"
 
